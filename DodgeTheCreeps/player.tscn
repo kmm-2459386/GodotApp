@@ -1,0 +1,78 @@
+[gd_scene load_steps=13 format=3 uid="uid://cklfa3juh5k7m"]
+
+[ext_resource type="Script" path="res://player.gd" id="1_fstrr"]
+[ext_resource type="Texture2D" uid="uid://cly6wii7efe0w" path="res://art/playerGrey_up1.png" id="1_nlbvk"]
+[ext_resource type="Texture2D" uid="uid://bvlywsuq5gosl" path="res://art/playerGrey_up2.png" id="2_minmp"]
+[ext_resource type="Texture2D" uid="uid://cc3mo4sqtgof2" path="res://art/playerGrey_walk1.png" id="3_wjfrs"]
+[ext_resource type="Texture2D" uid="uid://qwb42wg58rqp" path="res://art/playerGrey_walk2.png" id="4_0ly1s"]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_mp5vc"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("1_nlbvk")
+}, {
+"duration": 1.0,
+"texture": ExtResource("2_minmp")
+}],
+"loop": true,
+"name": &"up",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("3_wjfrs")
+}, {
+"duration": 1.0,
+"texture": ExtResource("4_0ly1s")
+}],
+"loop": true,
+"name": &"walk",
+"speed": 5.0
+}]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_xyai3"]
+radius = 27.0
+height = 68.0
+
+[sub_resource type="Gradient" id="Gradient_vgnyo"]
+colors = PackedColorArray(1, 1, 1, 0.501961, 1, 1, 1, 0)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_wu210"]
+gradient = SubResource("Gradient_vgnyo")
+
+[sub_resource type="Curve" id="Curve_uy5im"]
+_data = [Vector2(0.005, 0.5), 0.0, 0.0, 0, 0, Vector2(0.995, 0.324), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="CurveTexture" id="CurveTexture_r30il"]
+curve = SubResource("Curve_uy5im")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_q4s7l"]
+particle_flag_disable_z = true
+gravity = Vector3(0, 0, 0)
+scale_curve = SubResource("CurveTexture_r30il")
+color_ramp = SubResource("GradientTexture1D_wu210")
+
+[node name="Player" type="Area2D"]
+z_index = 10
+script = ExtResource("1_fstrr")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+scale = Vector2(0.5, 0.5)
+sprite_frames = SubResource("SpriteFrames_mp5vc")
+animation = &"up"
+frame_progress = 0.363139
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(-1, 1)
+shape = SubResource("CapsuleShape2D_xyai3")
+
+[node name="Trail" type="GPUParticles2D" parent="."]
+z_index = -1
+amount = 10
+process_material = SubResource("ParticleProcessMaterial_q4s7l")
+texture = ExtResource("3_wjfrs")
+speed_scale = 2.0
+
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]

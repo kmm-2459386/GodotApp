@@ -1,0 +1,14 @@
+[gd_scene load_steps=4 format=3 uid="uid://bgmr5wwf7xyke"]
+
+[ext_resource type="Script" path="res://Sound.gd" id="1_n6ho1"]
+[ext_resource type="AudioStream" uid="uid://dlt66ropg74vn" path="res://art/House In a Forest Loop.ogg" id="2_qi0mo"]
+[ext_resource type="AudioStream" uid="uid://dlstj2jh1tdk6" path="res://art/gameover.wav" id="3_87iub"]
+
+[node name="Sound" type="Node"]
+script = ExtResource("1_n6ho1")
+
+[node name="BGM" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("2_qi0mo")
+
+[node name="GameOver" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("3_87iub")
